@@ -5,8 +5,8 @@ use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
 use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+
 
 class PostsRepository implements PostsRepositoryInterface{
 
@@ -24,18 +24,21 @@ class PostsRepository implements PostsRepositoryInterface{
 
 
 
-    public function StoreAlbum($request)
+    public function Storeposts($request)
     {
         try {
+            $fileextension=$request->file('image')->getClientOriginalExtension();
+            $path='app/images_attachments';
+            $filename=$path.'/'.time().'.'.$fileextension;
+            $request->image->move($path,$filename);
+
             $posts = new Post();
-            $img=$request->image;
             $posts->title =$request->title;
             $posts->author =$request->user_id;
             $posts->Joining_Date = $request->Joining_Date;
             $posts->content =$request->content;
-            $posts->image =$img->getClientOriginalName();
+            $posts->image=$filename;
             $posts->save();
-            $img->storeAs($posts->id,$img->getClientOriginalName(),$disk='images_attachments');
             session()->flash('message', 'Post Created Successfully');
             return redirect()->route('posts.index');
         }
@@ -58,16 +61,19 @@ class PostsRepository implements PostsRepositoryInterface{
         try {
             $posts = Post::findorfail($post->id);
             if (!empty($request->image)){
-                Storage::disk('images_attachments')->deleteDirectory($post->id);
-                $img=$request->image;
+                File::delete($posts->image);
+                $fileextension=$request->file('image')->getClientOriginalExtension();
+                $path='app/images_attachments';
+                $filename=$path.'/'.time().'.'.$fileextension;
+                $request->image->move($path,$filename);
+
                 $posts->title =$request->title;
                 $posts->author =$request->user_id;
                 $posts->Joining_Date = $request->Joining_Date;
                 $posts->content =$request->content;
-                $img->storeAs($post->id,$img->getClientOriginalName(),$disk='images_attachments');
-                $posts->image =$img->getClientOriginalName();
-                $posts->save();
 
+                $posts->image =$filename;
+                $posts->save();
                 session()->flash('message', 'Post Created Successfully');
                 return redirect()->route('posts.index');
                 }
@@ -100,8 +106,9 @@ class PostsRepository implements PostsRepositoryInterface{
         }
         else
         {
-            session()->flash('error','Error!!! Post not deleted Successfully please delete all comment');
-            return redirect()->route('posts.index');
+//            session()->flash('error','Error!!! Post not deleted Successfully please delete all comment');
+//            return redirect()->route('posts.index');
+            return abort(404);
         }
     }
 
@@ -109,9 +116,9 @@ class PostsRepository implements PostsRepositoryInterface{
 
     public function forcedelete($request,$post){
         $my_comment_id=Comment::where('post_id',$request->post_id)->pluck('post_id');
-
+        $posts = Post::findorfail($request->post_id);
         if ($my_comment_id->count()==0) {
-            Storage::disk('images_attachments')->deleteDirectory($request->post_id);
+            File::delete($posts->image);
             Post::withTrashed()
                 ->where('id', $request->post_id)
                 ->first()
@@ -121,8 +128,7 @@ class PostsRepository implements PostsRepositoryInterface{
         }
         else
         {
-            session()->flash('error','Error!!! Post not deleted Successfully please delete all comment');
-            return redirect()->route('posts.index');
+            return abort(404);
         }
 
     }

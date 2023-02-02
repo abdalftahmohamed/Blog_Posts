@@ -74,7 +74,7 @@ Dashboard | Categories
                                         <td>{{$post->author}}</td>
                                         <td>{{$post->content}}</td>
                                         <td>{{$post->Joining_Date}}</td>
-                                        <td><img class="rounded avatar-lg" src="{{(! empty($post->author)) ? asset('app/images_attachments/'.$post->id.'/'.$post->image) : asset('backend/assets/images/users/no_image.jpg') }}"  alt="not loading image"></td>
+                                        <td><img class="rounded avatar-lg" src="{{$post->image}}"  alt="not loading image"></td>
                                         <td>
                                             <form action="{{route('restore',$post->id)}}" method="POST" style="display: inline-block;">
                                                 @csrf

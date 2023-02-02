@@ -10,7 +10,7 @@ interface PostsRepositoryInterface{
 
     public function getallposts();
     public function createPosts();
-    public function StoreAlbum($request);
+    public function Storeposts($request);
     public function editPost($post);
     public function updatepost($request,Post $post);
     public function softdelete($request,$post);

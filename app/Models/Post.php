@@ -9,8 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Post extends Model
 {
     use HasFactory;
-    protected $guarded=[];
+    protected $fillable=['title','author','Joining_Date','content','image'];
     use SoftDeletes;
+
 
     public function Auther()
     {

@@ -34,7 +34,7 @@ Dashboard | Edit Category
                                 <div class="mb-3">
                                     <label>Title</label>
                                     <input type="text" name="title" value="{{$id_post->title}}" class="form-control" required placeholder="Title Name" />
-                                    @error('name')
+                                    @error('title')
                                     <span class="text-danger" role="alert">
                                         <strong>{{$message}}</strong>
                                     </span>
@@ -48,7 +48,6 @@ Dashboard | Edit Category
                                     <label for="validationCustom03" class="form-label">Author</label>
                                     <select name="user_id" class="form-select" id="validationCustom03"  required>
                                         @foreach($auther as $value)
-{{--                                        <option selected disabled value="{{$value->id}}">option</option>--}}
                                             <option value="{{$value->id}}">{{$value->name}}</option>
                                         @endforeach
                                     </select>
@@ -85,7 +84,7 @@ Dashboard | Edit Category
                                     <div class="col-lg-12">
                                         <div class="input-group">
                                             <input type="file" name="image"  value="{{$id_post->image}}" class="form-control" accept="image/*" id="image">
-                                            <img id="showImage" class="rounded avatar-lg" src="{{asset('app/images_attachments/'.$id_post->id .'/'.$id_post->image) }}" style="width: 15%; height:15%;" alt="No Image">
+                                            <img id="showImage" class="rounded avatar-lg" src="{{$id_post->image}}" style="width: 15%; height:15%;" alt="No Image">
                                             @error('image')
                                             <span class="text-danger" role="alert">
                                                 <strong>{{$message}}</strong>

@@ -12,27 +12,13 @@ Dashboard | Add Category
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Add Post</h4><br>
-                            @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @if(session('error'))
-                                        <div class="alert alert-danger">
-                                            {{session('error')}}
-                                        </div>
-                                    @endif
-                                    @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                            @endif
 
                             <form class="custom-validation" action="{{route('posts.store')}}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
                                     <label>Title</label>
-                                    <input type="text" name="title" value="{{old('title')}}" class="form-control" required placeholder="Title Name" />
-                                    @error('name')
+                                    <input type="text" name="title" value="{{old('title')}}" class="form-control"  placeholder="Title Name" />
+                                    @error('title')
                                     <span class="text-danger" role="alert">
                                         <strong>{{$message}}</strong>
                                     </span>
@@ -62,7 +48,7 @@ Dashboard | Add Category
                                     <div class="col">
                                         <label for="title">Date</label>
                                         <div class='input-group date'>
-                                            <input class="form-control" type="date"  id="datepicker-action" name="Joining_Date" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd" required>
+                                            <input class="form-control" type="date" value="{{old('Joining_Date')}}" id="datepicker-action" name="Joining_Date" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd" >
                                         </div>
                                         @error('Joining_Date')
                                         <div class="alert alert-danger">{{ $message }}</div>
@@ -74,6 +60,9 @@ Dashboard | Add Category
                                 <div class="mb-3">
                                     <label>content</label>
                                     <input type="text" name="content" value="{{old('content')}}" class="form-control"  placeholder="content text" />
+                                    @error('content')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
 
@@ -81,7 +70,7 @@ Dashboard | Add Category
                                     <label>Images</label>
                                     <div class="col-lg-12">
                                         <div class="input-group">
-                                            <input type="file" name="image"  class="form-control" accept="image/*" id="image">
+                                            <input type="file" name="image" value="{{old('image')}}" class="form-control" accept="image/*" id="image">
                                             <img id="showImage" class="rounded avatar-lg" src="{{asset('backend/assets/images/users/no_image.jpg') }}" style="width: 15%; height:15%;" alt="No Image">
                                             @error('image')
                                             <span class="text-danger" role="alert">

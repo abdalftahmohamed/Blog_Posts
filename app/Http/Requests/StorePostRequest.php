@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Post;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StorePostRequest extends FormRequest
@@ -25,9 +26,9 @@ class StorePostRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|string',
+            'title' => 'required|string|regex:/^[a-zA-Z]+$/|max:255|unique:posts,title',
             'content' => 'required|string|min:5',
-            'image'=>'required|image|mimes:png,jpg,webp|max:2048,'.$this->id,
+            'image'=>'required|image|mimes:png,jpg,webp|max:2048',
             'Joining_Date' => 'required|date|date_format:Y-m-d',
         ];
     }

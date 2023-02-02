@@ -31,7 +31,7 @@ class PostController extends Controller
 
     public function store(StorePostRequest $request)
     {
-        return $this->posts->StoreAlbum($request);
+        return $this->posts->Storeposts($request);
     }
 
     public function edit(Post $post)

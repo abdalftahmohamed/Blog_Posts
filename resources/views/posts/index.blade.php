@@ -76,7 +76,8 @@ Dashboard | Categories
                                         <td>{{$post->Auther->name}}</td>
                                         <td>{{$post->content}}</td>
                                         <td>{{$post->Joining_Date}}</td>
-                                        <td><img class="rounded avatar-lg" src="{{(! empty($post->id)) ? asset('app/images_attachments/'.$post->id.'/'.$post->image) : asset('backend/assets/images/users/no_image.jpg') }}"  alt="not loading image"></td>
+                                        <td><img class="rounded avatar-lg" src="{{$post->image}}" style="width: 150px; height:150px;" alt="not loading image"></td>
+
                                         <td>
                                             <form action="{{route('posts.destroy',$post->id)}}" method="POST" style="display: inline-block;">
                                                 @csrf
